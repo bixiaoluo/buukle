@@ -1,5 +1,5 @@
 #待做工作
-## 0. 总工程名规范       
+## 0. 总工程名规范    [<a style="color : red">done</a>]    
 ## 1. 各web工程全局拦截参数校验
 ## 2. sso工程重构
 sso重构为sss工程,拆分sso(single signOn) 和 sss(single security) 包
