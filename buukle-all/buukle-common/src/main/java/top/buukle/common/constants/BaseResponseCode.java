@@ -14,7 +14,7 @@ package top.buukle.common.constants;
  *          03 = article;
  *          04 = portal;
  *          05 = album;
- *          06 = sso-plugin;
+ *          06 = buukle-security;
  *          99 = 系统;
  *      3-4位 : 指响应功能编码
  *          每个系统依次从00开始,到99结束;
@@ -58,7 +58,7 @@ public enum BaseResponseCode {
     USER_PERMISSION_OPEN_AUTH_NULL(BaseResponseCode.FAILURES, "060002", "授权失败! 请指定授权策略!"),
     USER_LOGIN_USERNAME_PASSWORD_NULL_SSO_PLUGIN(BaseResponseCode.FAILURES, "060003","登录失败!用户名或密码为空!"),
     USER_AUTHENTICATION_FAILED_COOKIE_NULL(BaseResponseCode.FAILURES, "060004","认证失败!客户端标识信息为空!"),
-    USER_AUTHENTICATION_FAILED_REQUEST_WRONG(BaseResponseCode.FAILURES, "060005","认证失败!sso-plugin配置sso.host请求失败!");
+    USER_AUTHENTICATION_FAILED_REQUEST_WRONG(BaseResponseCode.FAILURES, "060005","认证失败!buukle-security配置sso.host请求失败!");
 
     private static final String SUCCESSFUL = "S";
     private static final String FAILURES = "F";

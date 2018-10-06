@@ -10,12 +10,10 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>buukle-common</module>
-        <module>buukle-api</module>
+        <module>buukle-clould</module>
         <module>buukle-plugin</module>
-        <module>buukle-provider-sso</module>
-        <module>buukle-consumer-cms</module>
-        <module>buukle-provider-mc</module>
-        <module>buukle-daoEntity</module>
+        <module>buukle-provider</module>
+        <module>buukle-consumer</module>
     </modules>
     <name>buukle-all</name>
     <description>elog project</description>
@@ -35,18 +33,12 @@
         <java.version>1.8</java.version>
         <!--______________________________________________ dataSource _________________________________________________-->
         <mybatis.springboot.starter>1.3.1</mybatis.springboot.starter>
+        <org.springframework.cloud>Finchley.RELEASE</org.springframework.cloud>
         <mysql.connector.java>5.1.38</mysql.connector.java>
         <druid>1.0.28</druid>
         <mybatis-paginator>1.2.17</mybatis-paginator>
         <!--_______________________________________________ cache _____________________________________________________-->
         <fastjson>1.2.47</fastjson>
-
-        <!--__________________________________________ duubo and restful ______________________________________________-->
-        <zkclient>0.1</zkclient>
-        <com.alibaba>2.8.0</com.alibaba>
-        <javax.ws.rs>2.1-m07</javax.ws.rs>
-        <org.jboss.resteasy>3.1.3.Final</org.jboss.resteasy>
-        <javassist>3.18.2-GA</javassist>
         <!--_______________________________________________ message ___________________________________________________-->
         <javax.mail>1.4.7</javax.mail>
         <!--_______________________________________________ commons ___________________________________________________-->
@@ -58,13 +50,19 @@
         <commons.beanutils>1.9.2</commons.beanutils>
         <commons.fileupload>1.3.2</commons.fileupload>
         <commons.configuration>1.10</commons.configuration>
-
-
     </properties>
 
     <!--======================================================集中管理版本号=================================================-->
     <dependencyManagement>
         <dependencies>
+            <!--______________________________________________ boot cloud _____________________________________________-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${org.springframework.cloud}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!--______________________________________________ dataSource _____________________________________________-->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
@@ -97,62 +95,6 @@
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
                 <version>${javax.mail}</version>
-            </dependency>
-            <!--__________________________________________ duubo and restfu __________________________________________-->
-            <dependency>
-                <groupId>com.github.sgroschupf</groupId>
-                <artifactId>zkclient</artifactId>
-                <version>${zkclient}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>dubbo-rpc-rest</artifactId>
-                <version>${com.alibaba}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>dubbo</artifactId>
-                <version>${com.alibaba}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>javax.ws.rs-api</artifactId>
-                <version>${javax.ws.rs}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-jaxrs</artifactId>
-                <version>${org.jboss.resteasy}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-client</artifactId>
-                <version>${org.jboss.resteasy}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-jackson-provider</artifactId>
-                <version>${org.jboss.resteasy}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-multipart-provider</artifactId>
-                <version>${org.jboss.resteasy}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-netty</artifactId>
-                <version>${org.jboss.resteasy}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-jdk-http</artifactId>
-                <version>${org.jboss.resteasy}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.javassist</groupId>
-                <artifactId>javassist</artifactId>
-                <version>${javassist}</version>
             </dependency>
             <!--______________________________________________ commons _______________________________________________-->
             <dependency>
@@ -199,15 +141,23 @@
     <!--===================================================公共依赖=========================================================-->
     <dependencies>
         <!--_____________________________________ springBoot-starts ___________________________________________________-->
+        <!--dependency for spring boot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
+        <!--dependency for spring cloud eureka (SpringBoot2.0+专用,低于2.0请使用spring-cloud-starter-eureka-server)-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
+        <!--dependency for spring cloud feign (SpringBoot2.0+专用,低于2.0请使用spring-cloud-starter-feign)-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+        <!--dependency for spring web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -216,36 +166,25 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <!--dependency for spring aop-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <!--dependency for spring redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>-->
-
-        <!--__________________________________________ dataSource _____________________________________________________-->
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.miemiedev</groupId>
-            <artifactId>mybatis-paginator</artifactId>
-        </dependency>
         <!--__________________________________________ message ________________________________________________________-->
         <dependency>
             <groupId>javax.mail</groupId>
@@ -263,55 +202,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <!--_____________________________________ duubo and restful ___________________________________________________-->
-        <dependency>
-            <groupId>com.github.sgroschupf</groupId>
-            <artifactId>zkclient</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo-rpc-rest</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>dubbo</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxrs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jackson-provider</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-multipart-provider</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-netty</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jdk-http</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
         </dependency>
         <!--_________________________________________ commons _________________________________________________________-->
         <dependency>

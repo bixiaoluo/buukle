@@ -6,62 +6,80 @@
 布壳儿项目(以下简称"布壳儿")目前是一个在萌芽状态的,开源,免费,公益性质的java在线分享项目.
 由@elvin(email: 18001268330@163.com)独立开发.目的是为java开发工程师提供一个垂直的精
 细的站点.在布壳儿,java er们能分享交流自己的学习经验,技术心得.同时能有一个空间记录开发生
-活中发生点滴趣事的照片流.目前网站没有营收,网站运营资源由elvin承担.预计将把网站的营收除去
-运营成本外,提供给公益基金(如果有的话 ^_^).
+活中发生点滴趣事的照片流.
 
-                               ------一个很天真纯粹的想法,但是很想坚持做下去的人
+                              
 ````
 ### 0.2 本期开发需求要点
 ````
 对一期技术升级:
-    1. dubbo --> dubbox[2.8.0] 添加restful接口支持;
-    2. ssm   --> springBoot [2.0.5] +spring-data-mybatis 发布形式改为jar包部署发布;
+    1. dubbo --> spring-cloud 添加restful接口支持;
+    2. ssm   --> springBoot [2.0.5] + spring-data-mybatis 发布形式改为jar包部署发布;
 对一期项目结构重构 : 
-    1. 拆分buukle-plugin 子项目
+    1. 拆分buukle-common,buukle-consumer,buukle-provider,buukle-plugin,项目
     2. 重构项目子父结构
 ````
 
 ## 1. 技术选型
 ````
-springBoot[2.0.5.RELEASE] +rabbitMQ + dubbox[2.8.0] + mybatis[1.3.1] + redis[jedis-2.9.0] + zookeeper
-注意 : dubbox 2.8.0 jar 需要下载源码自行打包并安装到本地/私有依赖版本库服务; 
+springBoot[2.0.5.RELEASE]  +spring-cloud + mybatis[1.3.1] 
 
 ````
->可参考: [dubbo 2.8.4（dubbox）从git下载到安装至maven本地仓库](https://blog.csdn.net/jfqqqqq/article/details/79559036)
 ## 2. 项目搭建
 ###2.1 项目结构:
 \
 buukle-all\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-common\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-daoEntity\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-api\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-api-inner\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-api-out\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-clould\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-plugin\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-plugin-sso\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-plugin-mq\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-provider-mc\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-provider-sso\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-consumer-cms\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-consumer-portal\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-consumer-article\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-consumer-album\
-###2.2 buukle-all 父工程(pom)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-plugin-security\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-provider\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-provider-entity\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-provider-mc\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-provider-securties\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-provider-entities\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|------buukle-provider-security\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-consumer\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-consumer-cms\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-consumer-portal\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-consumer-article\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---------buukle-consumer-album\
+
+###2.2 buukle-all root父工程(pom)
 ````
 1. 依赖spring-boot-parent ,为项目提供boot环境
 2. 集中统一管理依赖版本
 3. 按照2.中的版本号,集中依赖公用类库,为项目和子工程提供web环境
 
 ````
-###2.3 buukle-common 工具包工程 (pom)
+###2.3 buukle-common 工具包工程 (jar)
 ````
 此工程主要为项目提供常规工具,例如 : 
 1. baseRequest : 封装请求类,其实例包含两个部分,即 自定义类型requestHead 和 
@@ -78,26 +96,12 @@ buukle-all\
         其中也封装了jedis的一些功能工具模块,开发者可直接用工厂+ 模板类通过编写回调逻辑直接使用分布式锁等工具;
     ......
 ````
-###2.4 buukle-api 程序接口工程 (application_interface)
-
-####此工程主要管理项目中所有的服务接口,其包含以下两个子工程:
-
-####2.4.1 buukle-api-inner 内部接口工程(jar)
+###2.4 buukle-clould 程序注册监控管理云中心 (executable jar)
 
 ````
-此工程负责管理项目内部间相互沟通的接口 :
-    <1> 内部工程应用dubbox可在注册中心注册不同功能的接口服务,此时内部项目可直接引入此接口依赖,
-        并在dubbox配置中引入接口服务,便可直接调用远程接口的方法;
-    <2> 内部项目之间也可通过dubbox在此项目rest子包下发布rest接口服务,用于适应非dubbox子工程
-        和dubbox不友好子项目的rest接口调用需求;
+此工程主要管理项目中所有的feign-Client服务状态 : 
+    <1>  通过clould集成提供的一些服务,监控和管理feign-client的活动;
         
-````
-####2.4.2 buukle-api-out 外部接口工程(jar)
-````
-此工程负责管理项目内部工程与外部项目进行交流的接口 :
-    <1> 自工程可通过本工程rest子包下对外发布rest接口,此时项目外的组织或个人即可调用api方法;例如 :
-    buukle-provider-sso对外暴露的登录,注册接口,第三方应用可便捷接入系统;
-    
 ````
 ###2.5 buukle-plugin 插件工程(pom)
 
@@ -109,7 +113,7 @@ buukle-all\
     <1> 单点退出时,发通知广播其他应用及时下线;
     <2> 接受第三方异步通知的消息内容,并做后续处理
 ````
-####2.5.2 buukle-plugin-sso 单点登陆&授权接入插件(jar)
+####2.5.2 buukle-plugin-security 单点登陆&授权接入插件(jar)
 ````
 此工程负责提供单点登录功能的接入 :
     <1> 该插件通过spring拦截器(inteceptor)实现,应用可通过配置相应的interceptor,传入指定的参数即可接入;
@@ -118,7 +122,11 @@ buukle-all\
 此工程负责提供认证授权功能 :
     <1> 该插件通过拦截请求,验证用户的cookie缓存的用户信息,并对uri作权限验证 
 ````
-###2.6 buukle-provider-mc 管理中心服务工程 (executable jar)
+###2.6 buukle-provider 生产者父工程 (pom)
+
+此工程负责管理所有的生产者服务工程
+
+####2.6.1 buukle-provider-mc 管理中心服务工程 (executable jar)
 ````
 此工程主要为项目提供后台数据处理服务,是一个纯粹的接口服务工程.
     
@@ -127,13 +135,17 @@ buukle-all\
     这时候就需要一个管理中心对接口进行统一的管理.
     2. 提供全局验签服务
 ````
-###2.7 buukle-provider-sss 单点登录&授权接口服务工程 (executable jar)
+####2.6.2 buukle-provider-security 单点登录&授权服务工程 (executable jar)
 ````
 此工程主要为项目提供单点登录数据处理服务以及缓存服务,是一个纯粹的接口服务工程.
-    此工程接收buukle-sso-plugin 插件发送的请求,并对请求作相应的登录,认证,授权的处理.其中需要用到
-    与buukle-provider-mc(简称mc)做交互,用于用户数据的采集和缓存.
+    此工程接收buukle-plugin-security 插件发送的请求,并对请求作相应的登录,认证,授权的处理.,于用户数据的采集和缓存.
 ````
-###2.8 buukle-consumer-cms 用户管理系统(executable jar)
+
+###2.7 buukle-consumer 消费者父工程 (pom)
+
+此工程负责管理所有的生产者服务工程
+
+####2.7.1 buukle-consumer-cms 用户管理系统(executable jar)
 ````
 此工程主要为项目提供用户后台管理服务
 
@@ -141,14 +153,14 @@ buukle-all\
     等功能,主要分为几个核心模块: 首页 | 文章管理 | 数据统计 | 权限管理 | 系统设置 等;分别
     对应不同的功能流程;
 ````
-###2.9 buukle-consumer-portal 门户系统(executable jar)
+####2.7.2 buukle-consumer-portal 门户系统(executable jar)
 ````
  此工程主要为项目提供用户门户服务,未登录用户可通过门户完成 :
         
         1. 首页浏览推送轮播的文章推荐;
         2. 登录门进入门户.
 ````
-###3.0 buukle-consumer-article 文章系统(executable jar)
+####2.7.3 buukle-consumer-article 文章系统(executable jar)
 ````
  此工程主要为项目提供文章服务,用户可通过文章系统
  
@@ -160,7 +172,7 @@ buukle-all\
     6. 后台通过消息处理文章的访问数据等;
      
 ````
-###3.1 buukle-consumer-album 相册系统(executable jar)
+####2.7.4 buukle-consumer-album 相册系统(executable jar)
 ````
 
 此工程主要为项目提供相册服务
