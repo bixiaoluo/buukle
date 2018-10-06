@@ -154,10 +154,11 @@ public class SecurityBusinessImpl implements SecurityBusiness {
      * @return
      */
     private BaseResponse setPermission(String uri, HttpServletRequest request, String applicationName, BaseResponse authResponse) throws Exception {
-        BaseRequest baseRequest = new BaseRequest.Builder().build(applicationName);
+        User user = (User) authResponse.getDataWithIndex(User.class, 0);
+        BaseRequest baseRequest = new BaseRequest.Builder().setOperationId(user.getUserId()).setOperationLoginName(user.getUsername()).setOperationName(user.getNameCn()).build(applicationName);
         UserLoginPermissionQuery userLoginPermissionQuery = new UserLoginPermissionQuery();
         userLoginPermissionQuery.setUrl(uri);
-        userLoginPermissionQuery.setUser((User) authResponse.getDataWithIndex(User.class,0));
+        userLoginPermissionQuery.setUser(user);
         userLoginPermissionQuery.setUserCookie(CookieUtil.getUserCookie(request));
         baseRequest.setInfo(userLoginPermissionQuery);
         return securityInvoker.setPermission(baseRequest);

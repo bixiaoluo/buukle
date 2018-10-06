@@ -1,4 +1,4 @@
-package top.buukle.provider.security.filter;
+package top.buukle.common.filter;
 
 import top.buukle.common.util.common.HttpHelper;
 
@@ -16,11 +16,12 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 
 
-public class GlobalParameterValidateRequestWrapper extends HttpServletRequestWrapper {
+public class BaseRequestWrapper extends HttpServletRequestWrapper {
 
     private final byte[] body;
+    private final String bodyString;
 
-    public GlobalParameterValidateRequestWrapper(HttpServletRequest request) throws IOException {
+    public BaseRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
         Enumeration e = request.getHeaderNames()   ;
         while(e.hasMoreElements()){
@@ -29,7 +30,8 @@ public class GlobalParameterValidateRequestWrapper extends HttpServletRequestWra
             System.out.println(name+" = "+value);
 
         }
-        body = HttpHelper.getBodyString(request).getBytes(Charset.forName("UTF-8"));
+        bodyString = HttpHelper.getBodyString(request);
+        body = bodyString.getBytes(Charset.forName("UTF-8"));
     }
 
     @Override
@@ -81,6 +83,6 @@ public class GlobalParameterValidateRequestWrapper extends HttpServletRequestWra
     }
 
     public String getBody() {
-        return body.toString();
+        return bodyString;
     }
 }

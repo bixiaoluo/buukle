@@ -68,11 +68,34 @@ public class BaseRequest<T>{
 
     /** 内部建造类*/
     public static class Builder{
+        private static final String DEFAULT_LOGIN_NAME = "authenticationOrLoginSystem";
+        private static final String DEFAULT_OPERATION_NAME = "authenticationOrLoginSystem";
+        private static final String DEFAULT_OPERATION_ID = "-1";
         BaseRequest baseRequest = new BaseRequest();
+        RequestHead.Builder headBuilder = new RequestHead.Builder();
 
+        /** 请求操作人登录名*/
+        public Builder setOperationLoginName(String operationLoginName){
+            headBuilder.setOperationLoginName(operationLoginName);
+            return this;
+        }
+
+        /** 请求操作人姓名*/
+        public Builder setOperationName(String operationName){
+            headBuilder.setOperationLoginName(operationName);
+            return this;
+        }
+        /** 请求操作人Id*/
+        public Builder setOperationId(String operationId){
+            headBuilder.setOperationId(operationId);
+            return this;
+        }
         /** 基础build*/
         public BaseRequest build(String applicationName) {
-            baseRequest.requestHead = new RequestHead.Builder().build(applicationName);
+            this.setOperationLoginName(DEFAULT_LOGIN_NAME);
+            this.setOperationName(DEFAULT_OPERATION_NAME);
+            this.setOperationId(DEFAULT_OPERATION_ID);
+            baseRequest.requestHead = headBuilder.build(applicationName);
             return baseRequest;
         }
     }

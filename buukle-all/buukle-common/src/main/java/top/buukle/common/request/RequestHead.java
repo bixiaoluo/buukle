@@ -24,7 +24,7 @@ public class RequestHead {
     /** 请求操作人*/
     private String operationName;
     /** 请求操作人Id*/
-    private Integer operationId;
+    private String operationId;
 
     public String getApplicationName() {
         return applicationName;
@@ -42,10 +42,29 @@ public class RequestHead {
         return operationName;
     }
 
-    public Integer getOperationId() {
+    public String getOperationId() {
         return operationId;
     }
 
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
+
+    public void setOperationDatetime(Date operationDatetime) {
+        this.operationDatetime = operationDatetime;
+    }
+
+    public void setOperationLoginName(String operationLoginName) {
+        this.operationLoginName = operationLoginName;
+    }
+
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
+    }
+
+    public void setOperationId(String operationId) {
+        this.operationId = operationId;
+    }
 
     /** 内部建造类*/
     public static class Builder {
@@ -67,7 +86,7 @@ public class RequestHead {
             requestHead.operationName = operationName;
             return this;
         }
-        public Builder setOperationId(Integer operationId) {
+        public Builder setOperationId(String operationId) {
             requestHead.operationId = operationId;
             return this;
         }

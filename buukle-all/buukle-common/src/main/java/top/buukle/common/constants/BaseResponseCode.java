@@ -32,6 +32,7 @@ public enum BaseResponseCode {
     BASE_REQUEST_NULL(BaseResponseCode.FAILURES, "999996", "参数错误!"),
     BASE_REQUEST_APPLICATION_NAME_NULL(BaseResponseCode.FAILURES, "999995", "参数错误!调用方应用名为空!"),
     BASE_REQUEST_FORMAT_INFO_LIST_WRONG(BaseResponseCode.FAILURES, "999994", "请求转换异常!"),
+    BASE_REQUEST_PARSE_INFO_LIST_WRONG(BaseResponseCode.FAILURES, "999993", "参数解析异常!"),
 
     /*----------------------------------------------SSO--01{*}{*}{*}{*}--------------------------------------------------------------------*/
     /** 登录,认证,授权 --0100{*}{*}*/

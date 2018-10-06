@@ -17,7 +17,7 @@ import top.buukle.common.util.logger.BaseLogger;
 import top.buukle.common.vo.ThreadParam;
 
 /**
- * 全局invoker参数打印切面
+ * 全局invoker(feign-client)日志参数打印切面
  */
 @Aspect
 @Component
@@ -47,6 +47,10 @@ public class InvokerAspect {
         this.logging(joinPoint);
     }
 
+    /**
+     * 执行打印日志
+     * @param joinPoint
+     */
     private void logging(JoinPoint joinPoint) {
         String className = joinPoint.getTarget().getClass().getName();
         Object[] args = joinPoint.getArgs();

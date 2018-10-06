@@ -21,13 +21,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class AppConfigure implements WebMvcConfigurer {
 
-    /** 链接超時時間*/
+    /** feign-http 链接超時時間*/
     public static int connectTimeOutMillis = NumberUtil.INTEGER_THOUSAND * NumberUtil.INTEGER_THREE;
-    /** 等待超时时间*/
+    /** feign-http 等待超时时间*/
     public static int readTimeOutMillis = NumberUtil.INTEGER_THOUSAND * NumberUtil.INTEGER_SIX;
 
     /**
-     * 放行静态资源
+     * 重写静态资源处理
      * @param registry
      */
     @Override
@@ -35,14 +35,35 @@ public class AppConfigure implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/static/");
     }
 
-    /** 注册拦截器插件实体*/
+    /**
+     * 注册 feign-http 超时设置实体
+     * @return
+     */
+    @Bean
+    public Request.Options options() {
+        return new Request.Options(connectTimeOutMillis, readTimeOutMillis);
+    }
+
+    /**
+     * 注册 feign-http 重试机制设置实体
+     * @return
+     */
+    @Bean
+    public Retryer feignRetryer() {
+        //超时后每隔200ms ~ 2000ms 重试一次,最多重试0次;
+        return new Retryer.Default(200,2000,0);
+    }
+
+    /**
+     * 注册 buukle-security 拦截器插件实体
+     * */
     @Bean
     SecurityInterceptor getSecurityInterceptor() {
         return new SecurityInterceptor(SecurityConfigure.DEFAULT_PARAMETERS);
     }
 
     /**
-     * 配置插入security拦截器插件
+     * 配置插入 buukle-security 拦截器插件
      * @param registry
      */
     @Override
@@ -53,24 +74,5 @@ public class AppConfigure implements WebMvcConfigurer {
                 //放行錯誤請求
                 .excludePathPatterns("/error")
         ;
-    }
-
-    /**
-     * feign 超时设置
-     * @return
-     */
-    @Bean
-    public Request.Options options() {
-        return new Request.Options(connectTimeOutMillis, readTimeOutMillis);
-    }
-
-    /**
-     * feign 重试机制
-     * @return
-     */
-    @Bean
-    public Retryer feignRetryer() {
-        //超时后每隔200ms ~ 2000ms 重试一次,最多重试0次;
-        return new Retryer.Default(200,2000,0);
     }
 }
