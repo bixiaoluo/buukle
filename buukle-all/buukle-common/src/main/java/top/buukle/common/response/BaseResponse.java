@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @Author elvin
  * @Date Created by elvin on 2018/9/19.
- * @Description : elog elog 公共响应规范
+ * @Description : buukle buukle 公共响应规范
  */
 public class BaseResponse<T>{
 

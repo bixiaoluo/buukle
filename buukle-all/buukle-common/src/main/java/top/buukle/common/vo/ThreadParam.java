@@ -13,9 +13,15 @@ public class ThreadParam {
     private String defaultMaxAge;
     /** 用户选定的自动登录策略*/
     private Integer loginStrategy;
+    /** 用户自定义参数*/
+    private String parameter;
 
     public String getCookie() {
         return cookie;
+    }
+
+    public String getParameter() {
+        return parameter;
     }
 
     public String getDefaultMaxAge() {
@@ -25,6 +31,8 @@ public class ThreadParam {
     public Integer getLoginStrategy() {
         return loginStrategy;
     }
+
+    private ThreadParam(){}
 
     /** 内部建造类*/
     public static class Biulder{
@@ -42,6 +50,10 @@ public class ThreadParam {
 
         public Biulder setLoginStrategy(Integer loginStrategy) {
             param.loginStrategy = loginStrategy;
+            return this;
+        }
+        public Biulder setParameter(String parameter) {
+            param.parameter = parameter;
             return this;
         }
 

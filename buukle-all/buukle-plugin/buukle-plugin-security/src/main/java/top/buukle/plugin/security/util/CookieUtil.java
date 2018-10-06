@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * elog cookie 工具
+ * buukle cookie 工具
  * Created by elvin on 2018/1/26.
  */
 public class CookieUtil{

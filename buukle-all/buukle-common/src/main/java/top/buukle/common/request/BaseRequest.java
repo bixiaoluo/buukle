@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @Author elvin
  * @Date Created by elvin on 2018/9/19.
- * @Description : elog 公共请求规范
+ * @Description : buukle 公共请求规范
  */
 public class BaseRequest<T>{
 
@@ -19,7 +19,7 @@ public class BaseRequest<T>{
     private T info;
     /** String 扩展请求参数*/
     private String expandParameterString;
-    /** String 扩展请求参数*/
+    /** Integer 扩展请求参数*/
     private Integer expandParameterInteger;
 
     public RequestHead getRequestHead() {

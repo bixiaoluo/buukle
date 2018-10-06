@@ -1,6 +1,9 @@
 package top.buukle.consumer.cms.configure;
 
 
+import feign.Request;
+import feign.Retryer;
+import top.buukle.common.util.common.NumberUtil;
 import top.buukle.plugin.security.configure.SecurityConfigure;
 import top.buukle.plugin.security.plugins.SecurityInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +20,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class AppConfigure implements WebMvcConfigurer {
+
+    /** 链接超時時間*/
+    public static int connectTimeOutMillis = NumberUtil.INTEGER_THOUSAND * NumberUtil.INTEGER_THREE;
+    /** 等待超时时间*/
+    public static int readTimeOutMillis = NumberUtil.INTEGER_THOUSAND * NumberUtil.INTEGER_SIX;
 
     /**
      * 放行静态资源
@@ -45,5 +53,24 @@ public class AppConfigure implements WebMvcConfigurer {
                 //放行錯誤請求
                 .excludePathPatterns("/error")
         ;
+    }
+
+    /**
+     * feign 超时设置
+     * @return
+     */
+    @Bean
+    public Request.Options options() {
+        return new Request.Options(connectTimeOutMillis, readTimeOutMillis);
+    }
+
+    /**
+     * feign 重试机制
+     * @return
+     */
+    @Bean
+    public Retryer feignRetryer() {
+        //超时后每隔200ms ~ 2000ms 重试一次,最多重试0次;
+        return new Retryer.Default(200,2000,0);
     }
 }

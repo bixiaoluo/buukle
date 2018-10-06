@@ -42,7 +42,7 @@ spring:
   ##web - thymeleaf 配置
   thymeleaf:
     cache: false
-    
+
 #clould注册中心 eureka 配置
 eureka:
   instance:
@@ -50,6 +50,7 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8001/eureka/
+
 ##===============================================================================================================================
 
 

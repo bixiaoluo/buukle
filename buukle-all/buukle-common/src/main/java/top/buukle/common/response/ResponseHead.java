@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * @Author elvin
  * @Date Created by elvin on 2018/9/19.
- * @Description : elog 公共响应头规范
+ * @Description : buukle 公共响应头规范
  */
 public class ResponseHead {
 

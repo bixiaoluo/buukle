@@ -31,6 +31,11 @@ public class SecurityConstants {
     /*-----------------------------------系统返回--------------------------------------------------------------------*/
     /** 没有cookie,未登录*/
     public static final String NO_LOGIN = SecurityInterceptor.LOGIN_PATH;
+    /** 没有来源页面*/
+    public static final String NO_REEFER_PATH = "/noReefer";
+    public static final String NO_REEFER_VIEW_NAME = "noReefer";
+    public static final String NO_REEFER_WORD = "当前页面访问来源非法!请通过正规方式访问目标页面!";
+
     /** 认证失败*/
     public static final String NO_AUTHENTICATION_WORD = "登录超时，请重新登陆 ！";
     /** 没有权限*/

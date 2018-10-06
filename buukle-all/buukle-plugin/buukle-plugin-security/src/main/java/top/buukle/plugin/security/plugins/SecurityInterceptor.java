@@ -31,7 +31,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
     /** 请求头来源 常量*/
     final public static String REQUEST_HEADER_REFEREE = "Referer";
-    public static final String NO_AUTHENTICATION_PATH = "/no_authentication";
+    public static final String NO_AUTHENTICATION_PATH = "/noAuthentication";
 
     @Autowired
     private SecurityBusiness authAndPermBusiness;
@@ -81,7 +81,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
             return false;
         }
         //放行页面 (登录页&错页&超时页&越权页面)
-        if(uri.equals(LOGIN_PATH) || uri.equals(ERROR_PAGE_PATH) || uri.equals(OUT_OF_TIME_PATH) || uri.equals(NO_PERMISSION_PATH)){
+        if(uri.equals(LOGIN_PATH) || uri.equals(ERROR_PAGE_PATH) || uri.equals(OUT_OF_TIME_PATH) || uri.equals(NO_PERMISSION_PATH) || uri.equals(SecurityConstants.NO_REEFER_PATH)){
             return true;
         }
         //执行登录
@@ -179,6 +179,11 @@ public class SecurityInterceptor implements HandlerInterceptor {
         //未登录
         if(baseResponse.getMsg().equals(SecurityConstants.NO_LOGIN)){
             response.sendRedirect(request.getContextPath() + SecurityConstants.NO_LOGIN);
+            return;
+        }
+        //来源非法
+        if(baseResponse.getMsg().equals(SecurityConstants.NO_REEFER_PATH)){
+            response.sendRedirect(request.getContextPath() + SecurityConstants.NO_REEFER_VIEW_NAME);
             return;
         }
         //认证失败(登录超时)

@@ -2,6 +2,7 @@ package top.buukle.plugin.security.invoker;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import top.buukle.common.annotation.InvokerLogging;
 import top.buukle.common.request.BaseRequest;
 import top.buukle.common.response.BaseResponse;
 
@@ -11,7 +12,7 @@ import top.buukle.common.response.BaseResponse;
  * @Description : 登录登出认证授权 FeignClient代理执行层对象
  */
 @FeignClient(value = "buukle-security")
-public interface SecurityInvoker {
+public interface SecurityInvoker{
 
     /**
      *
@@ -26,6 +27,7 @@ public interface SecurityInvoker {
      * @param request
      * @return
      */
+    @InvokerLogging(InvokerLogging.PRINT_FALSE)
     @PostMapping(value = "/api/security/user/authentication")
     BaseResponse authentication(BaseRequest request);
 
@@ -34,6 +36,7 @@ public interface SecurityInvoker {
      * @param request
      * @return
      */
+    @InvokerLogging(InvokerLogging.PRINT_FALSE)
     @PostMapping(value = "/api/security/user/setPermission")
     BaseResponse setPermission(BaseRequest request);
 }

@@ -42,8 +42,6 @@ public class UserServiceImpl implements UserService {
 	ModuleMapper moduleMapper;
 	@Resource
 	RoleMapper roleMapper;
-	@Resource
-	GroupsMapper groupsMapper;
 
 	private static final String AUTHENTICATION_WRONG = "认证失败";
 

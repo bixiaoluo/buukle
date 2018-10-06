@@ -105,7 +105,7 @@ public class SecurityConfigure {
         /*----------------------------------------设置免授权路径数组------------------------------------------------*/
             // 开启授权后，指定免授权的路径数组集合
             DEFAULT_PARAMETERS.setFreePermissionPathList(FREE_PERMISSION_PATH_ARRAY);
-            LOGGER.info("buukle-buukle-security 加载默认配置完成 \r\n 文件地址 : config/properties/sso.properties,接入应用名 :{},目标sso服务器地址 :{},ssoDomain : {} ,授权开关 :{}",
+            LOGGER.info("buukle-security 加载默认配置完成 \r\n 文件地址 : config/properties/sso.properties,接入应用名 :{},目标sso服务器地址 :{},ssoDomain : {} ,授权开关 :{}",
                     DEFAULT_PARAMETERS.getApplicationName(),
                     DEFAULT_PARAMETERS.getSsoHost(),
                     DEFAULT_PARAMETERS.getSsoDomain(),

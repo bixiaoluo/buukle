@@ -1,5 +1,6 @@
 package top.buukle.common.request;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -7,11 +8,12 @@ import java.util.Date;
 /**
  * @Author elvin
  * @Date Created by elvin on 2018/9/19.
- * @Description : elog 公共请求头规范
+ * @Description : buukle 公共请求头规范
  */
+@Valid
 public class RequestHead {
-
     /** 请求系统名称*/
+
     @NotNull // 不允许为空
     @Size(min = 1, max = 1) // 长度或大小范围
     private String applicationName;

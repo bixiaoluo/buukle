@@ -6,6 +6,7 @@ import top.buukle.common.exception.BaseException;
 import top.buukle.common.request.BaseRequest;
 import top.buukle.common.response.BaseResponse;
 import top.buukle.common.util.common.StringUtil;
+import top.buukle.common.util.logger.BaseLogger;
 import top.buukle.plugin.security.constants.SecurityConstants;
 import top.buukle.provider.security.vo.query.UserLoginPermissionQuery;
 import top.buukle.plugin.security.business.SecurityBusiness;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityBusinessImpl implements SecurityBusiness {
 
 
+    private static final BaseLogger LOGGER = BaseLogger.getLogger(SecurityBusinessImpl.class);
     @Autowired
     private  SecurityInvoker securityInvoker;
     /**
@@ -108,7 +110,7 @@ public class SecurityBusinessImpl implements SecurityBusiness {
         }
         //无来源url
         if(StringUtil.isEmpty(request.getHeader(SecurityInterceptor.REQUEST_HEADER_REFEREE)) && !uri.equals(SecurityInterceptor.INDEX_PATH)){
-            return new BaseResponse.Builder().buildFailed(SecurityConstants.NO_LOGIN);
+            return new BaseResponse.Builder().buildFailed(SecurityConstants.NO_REEFER_PATH);
         }
         //认证
         BaseResponse authResponse = this.authentication(request, ssoDefaultAge, applicationName);

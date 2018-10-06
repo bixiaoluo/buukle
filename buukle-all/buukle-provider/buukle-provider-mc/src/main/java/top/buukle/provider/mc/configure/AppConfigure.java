@@ -1,7 +1,7 @@
 package top.buukle.provider.mc.configure;
 
 
-import top.buukle.provider.mc.intercepter.GlobalInterceptor;
+import top.buukle.provider.mc.intercepter.GlobalParamInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,6 +17,6 @@ public class AppConfigure implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new GlobalInterceptor());
+        registry.addInterceptor(new GlobalParamInterceptor());
     }
 }

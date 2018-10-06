@@ -54,6 +54,16 @@ public class SecurityController {
         return modelAndView;
     }
     /**
+     * 去往登出页面
+     * @param modelAndView
+     * @return
+     */
+    @RequestMapping("${"+ SecurityConstants.LOGOUT_PATH_ENVIRONMENT_KEY+"}")
+    public  ModelAndView logout(ModelAndView modelAndView) {
+        modelAndView.setViewName(SecurityConstants.VIEW_NAME_PARAMETERS.getLogoutViewName());
+        return modelAndView;
+    }
+    /**
      * 去往错误页面
      * @param modelAndView
      * @return
@@ -64,13 +74,13 @@ public class SecurityController {
         return modelAndView;
     }
     /**
-     * 去往登出页面
+     * 去往无来源页面
      * @param modelAndView
      * @return
      */
-    @RequestMapping("${"+ SecurityConstants.LOGOUT_PATH_ENVIRONMENT_KEY+"}")
-    public  ModelAndView logout(ModelAndView modelAndView) {
-        modelAndView.setViewName(SecurityConstants.VIEW_NAME_PARAMETERS.getLogoutViewName());
+    @RequestMapping(SecurityConstants.NO_REEFER_PATH)
+    public  ModelAndView noReefer(ModelAndView modelAndView) {
+        modelAndView.setViewName(SecurityConstants.NO_REEFER_VIEW_NAME);
         return modelAndView;
     }
 }

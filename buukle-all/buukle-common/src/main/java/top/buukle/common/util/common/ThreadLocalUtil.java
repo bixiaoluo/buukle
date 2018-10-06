@@ -9,13 +9,17 @@ import top.buukle.common.vo.ThreadParam;
  */
 public class ThreadLocalUtil {
 
-    private  static ThreadLocal<ThreadParam> THREAD_LOCAL_USER_INFO = new ThreadLocal();
+    private  static ThreadLocal<ThreadParam> THREAD_LOCAL_PARAMETERS = new ThreadLocal();
 
     public static void set(ThreadParam param) {
-        THREAD_LOCAL_USER_INFO.set(param);
+        THREAD_LOCAL_PARAMETERS.set(param);
     }
 
     public static ThreadParam get() {
-        return THREAD_LOCAL_USER_INFO.get();
+        return THREAD_LOCAL_PARAMETERS.get();
+    }
+
+    public static void clear() {
+        THREAD_LOCAL_PARAMETERS.remove();
     }
 }
