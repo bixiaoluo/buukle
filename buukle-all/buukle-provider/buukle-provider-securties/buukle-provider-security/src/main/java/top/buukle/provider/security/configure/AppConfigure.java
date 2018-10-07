@@ -6,22 +6,17 @@ import feign.Retryer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import top.buukle.common.filter.BaseResponseParamHandlerFilter;
+import top.buukle.common.filter.reqestAndResponseParameterFilter.BaseResponseParamHandlerFilter;
 import top.buukle.common.util.common.NumberUtil;
 import top.buukle.plugin.security.configure.SecurityConfigure;
 import top.buukle.plugin.security.plugins.SecurityInterceptor;
-import top.buukle.common.filter.BaseRequestParamValidateFilter;
+import top.buukle.common.filter.reqestAndResponseParameterFilter.BaseRequestParamValidateFilter;
 import top.buukle.provider.security.util.RequestValidator;
-
-import java.nio.charset.Charset;
-import java.util.List;
+import top.buukle.provider.security.util.ResponseHanler;
 
 /**
  * @Author elvin
@@ -99,32 +94,18 @@ public class AppConfigure implements WebMvcConfigurer {
         registration.setOrder(1);
         return registration;
     }
+
     /**
-     * 注册 全局api请求参数校验 过滤器
+     * 注册 全局api返回参数校验 过滤器
      * @return
      */
     @Bean
     public FilterRegistrationBean filterRegistrationBean2() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new BaseResponseParamHandlerFilter());
+        registration.setFilter(new BaseResponseParamHandlerFilter(new ResponseHanler()));
         registration.addUrlPatterns("/api/*");
         registration.setName("BaseResponseParamHandlerFilter");
         registration.setOrder(2);
         return registration;
-    }
-
-    @Bean
-    public HttpMessageConverter<String> responseBodyConverter() {
-        return new StringHttpMessageConverter(Charset.forName("UTF-8"));
-    }
-
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(responseBodyConverter());
-    }
-
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.favorPathExtension(false);
     }
 }

@@ -1,4 +1,4 @@
-package top.buukle.common.filter;
+package top.buukle.common.filter.reqestAndResponseParameterFilter.wrapper;
 
 import top.buukle.common.util.common.HttpHelper;
 
@@ -15,23 +15,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 
-
+/**
+ * 请求参数处理装饰类
+ */
 public class BaseRequestWrapper extends HttpServletRequestWrapper {
 
-    private final byte[] body;
+    private byte[] bodyBytes;
     private final String bodyString;
 
     public BaseRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
-        Enumeration e = request.getHeaderNames()   ;
-        while(e.hasMoreElements()){
-            String name = (String) e.nextElement();
-            String value = request.getHeader(name);
-            System.out.println(name+" = "+value);
-
-        }
+//        Enumeration e = request.getHeaderNames()   ;
+//        while(e.hasMoreElements()){
+//            String name = (String) e.nextElement();
+//            String value = request.getHeader(name);
+//            System.out.println(name+" = "+value);
+//
+//        }
         bodyString = HttpHelper.getBodyString(request);
-        body = bodyString.getBytes(Charset.forName("UTF-8"));
+        bodyBytes = bodyString.getBytes(Charset.forName("UTF-8"));
     }
 
     @Override
@@ -42,7 +44,7 @@ public class BaseRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public ServletInputStream getInputStream() throws IOException {
 
-        final ByteArrayInputStream bais = new ByteArrayInputStream(body);
+        final ByteArrayInputStream bais = new ByteArrayInputStream(bodyBytes);
 
         return new ServletInputStream() {
             @Override
@@ -82,7 +84,19 @@ public class BaseRequestWrapper extends HttpServletRequestWrapper {
         return super.getHeaders(name);
     }
 
-    public String getBody() {
+    /**
+     * 获取请求参数
+     * @return
+     */
+    public String getRequestBody() {
         return bodyString;
+    }
+
+    /**
+     * 重写请求参数
+     * @param bodyString
+     */
+    public void setRequestBody(String bodyString) {
+        bodyBytes = bodyString.getBytes();
     }
 }
