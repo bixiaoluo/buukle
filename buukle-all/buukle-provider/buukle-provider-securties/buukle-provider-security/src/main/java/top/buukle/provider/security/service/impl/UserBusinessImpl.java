@@ -49,7 +49,8 @@ public class UserBusinessImpl implements UserBusiness {
         User userInfoForLogin = userMapper.getUserInfoForLogin(user);
         // 登录失败
         if(userInfoForLogin == null){
-            return new BaseResponse.Builder().buildFailed();
+//            return new BaseResponse.Builder().buildFailed();
+            throw new BaseException(BaseResponseCode.USER_LOGIN_USERNAME_PASSWORD_WRONG);
         }
         //查询用户扩展信息
         UserExp userExp = userExpMapper.getUserExpByUserId(userInfoForLogin.getUserId());

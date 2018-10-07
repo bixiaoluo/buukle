@@ -35,7 +35,7 @@ import java.lang.reflect.Method;
  */
 @Configuration
 @EnableCaching
-@PropertySource(value = "classpath:/application.yml")
+@PropertySource(value = "classpath:/application-prod.yml")
 public class RedisConfigure extends CachingConfigurerSupport {
 
     @Value("${spring.redis.host}")
@@ -181,5 +181,4 @@ public class RedisConfigure extends CachingConfigurerSupport {
             return jedisPool;
         }
     }
-
 }

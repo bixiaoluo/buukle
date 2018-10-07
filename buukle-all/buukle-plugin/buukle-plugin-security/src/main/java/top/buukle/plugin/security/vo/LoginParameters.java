@@ -1,5 +1,8 @@
 package top.buukle.plugin.security.vo;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,96 +12,111 @@ import java.util.List;
  * @Date Created by elvin on 2018/8/30.
  * @Description :
  */
+
+@Component
 public class LoginParameters {
-
-    /** 默认属性*/
-    public static final String DEFAULT_FIELD = "0";
-    /** 配置文件*/
-    public static final String DEFAULT_FILE = "1";
-    /** 用户自定义属性*/
-    public static final String USER_FIELD = "2";
-
-    /** 配置版本*/
-    public String version = DEFAULT_FIELD;
     /*---------------------------------------------设置应用相关--------------------------------------------*/
-
     /** 应用名*/
-    private String applicationName = "default applicationName";
+    @Value("${security.applicationName:}")
+    private String applicationName;
 
-    /** sso地址*/
-    private String ssoHost = "localHost";
+    /** security 发现服务应用名*/
+    @Value("${security.server.name:}")
+    private String serverName;
 
     /** 默认超时时间*/
-    private String defaultMaxAge = "300";
+    @Value("${security.defaultMaxAge:}")
+    private String defaultMaxAge;
 
     /** cookie跨域的domain*/
-    private String ssoDomain = "localhost";
+    @Value("${security.ssoDomain:}")
+    private String ssoDomain;
 
     /** 用户登出策略(1 : 单点登出 0 : 多点登出)*/
-    private String loginOutStrategy = "0";
+    @Value("${security.loginOutStrategy:}")
+    private String loginOutStrategy;
     /*-----------------------------------------------设置key-----------------------------------------------*/
 
     /** 获取验证码key*/
-    private String verificationCodeKey = "verificationCode";
+    @Value("${security.verificationCodeKey:}")
+    private String verificationCodeKey;
 
     /** 用户登录策略key*/
-    private String caCheStrategyKey = "caCheStrategyKey";
+    @Value("${security.caCheStrategyKey:}")
+    private String caCheStrategyKey;
 
     /*-----------------------------------------------设置开关-----------------------------------------------*/
 
     /** 授权开关(1 : 开启 0 : 关闭)*/
-    private String openAuth = "1";
+    @Value("${security.openAuth:}")
+    private String openAuth;
 
     /** 验证码验证开关(1 : 关闭 无 : 开启)*/
+    @Value("${security.closeVerification:}")
     private String closeVerification;
     /*--------------------------------设置指定返回json，stram 等非视图资源的Path 路径---------------------------*/
 
     /** 获取验证码路径*/
-    private String verificationImgPath = "/getVerificationImg";
+    @Value("${security.verificationImgPath:}")
+    private String verificationImgPath;
 
     /** 执行登陆路径*/
-    private String doLoginPath = "/doLogin";
+    @Value("${security.doLoginPath:}")
+    private String doLoginPath;
 
     /** 未开启授权应用获取用户信息路径*/
-    private String autoLoginPath = "/autoLogin";
+    @Value("${security.autoLoginPath:}")
+    private String autoLoginPath;
     /*-------------------------------设置指定跳转视图的Path映射 (requestMapping) 路径---------------------------*/
 
     /** 去往登录页面路径*/
-    private String loginPath = "/login";
+    @Value("${security.loginPath:}")
+    private String loginPath;
 
     /** 去往首页页面路径*/
-    private String indexPath = "/index";
+    @Value("${security.indexPath:}")
+    private String indexPath;
 
     /** 去往超时页面路径*/
-    private String outOfTimePath = "/outOfTime";
+    @Value("${security.outOfTimePath:}")
+    private String outOfTimePath;
 
     /** 去往越权页面路径*/
-    private String noPermissionPath = "/noPermission";
+    @Value("${security.noPermissionPath:}")
+    private String noPermissionPath;
 
     /** 去往越权页面路径*/
-    private String errorPagePath = "/errors";
+    @Value("${security.errorPagePath:}")
+    private String errorPagePath;
 
     /** 去往登出操作路径*/
-    private String logoutPath = "/logout";
+    @Value("${security.logoutPath:}")
+    private String logoutPath;
     /*---------------------------------设置指定跳转视图的Path的跳转视图 (view) 名称------------------------------*/
 
     /** 登录页面跳转视图名*/
-    private String loginViewName = "login";
+    @Value("${security.loginViewName:}")
+    private String loginViewName;
 
     /** 首页页面跳转视图名*/
-    private String indexViewName = "index";
+    @Value("${security.indexViewName:}")
+    private String indexViewName;
 
     /** 超时页面跳转视图名*/
-    private String outOfTimeViewName = "outOfTime";
+    @Value("${security.outOfTimeViewName:}")
+    private String outOfTimeViewName;
 
     /** 越权页面跳转视图名*/
-    private String noPermissionViewName = "noPermission";
+    @Value("${security.noPermissionViewName:}")
+    private String noPermissionViewName;
 
     /** 错误页面跳转视图名*/
-    private String errorPageViewName = "error";
+    @Value("${security.errorPageViewName:}")
+    private String errorPageViewName;
 
     /** 登出完成跳转视图名*/
-    private String logoutViewName = "index";
+    @Value("${security.logoutViewName:}")
+    private String logoutViewName;
 
     /*----------------------------------------设置免授权路径数组------------------------------------------------*/
 
@@ -106,12 +124,7 @@ public class LoginParameters {
     private List<String> freePermissionPathList = new ArrayList<>();
     //end
 
-    public LoginParameters(String version) {
-        this.version = version;
-    }
-
     public LoginParameters() {
-        this.version = version;
     }
 
     public String getApplicationName() {
@@ -122,12 +135,12 @@ public class LoginParameters {
         this.applicationName = applicationName;
     }
 
-    public String getSsoHost() {
-        return ssoHost;
+    public String getServerName() {
+        return serverName;
     }
 
-    public void setSsoHost(String ssoHost) {
-        this.ssoHost = ssoHost;
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
     public String getDefaultMaxAge() {
@@ -242,6 +255,14 @@ public class LoginParameters {
         this.noPermissionPath = noPermissionPath;
     }
 
+    public String getErrorPagePath() {
+        return errorPagePath;
+    }
+
+    public void setErrorPagePath(String errorPagePath) {
+        this.errorPagePath = errorPagePath;
+    }
+
     public String getLogoutPath() {
         return logoutPath;
     }
@@ -282,24 +303,16 @@ public class LoginParameters {
         this.noPermissionViewName = noPermissionViewName;
     }
 
-    public String getLogoutViewName() {
-        return logoutViewName;
-    }
-
-    public String getErrorPagePath() {
-        return errorPagePath;
-    }
-
-    public void setErrorPagePath(String errorPagePath) {
-        this.errorPagePath = errorPagePath;
-    }
-
     public String getErrorPageViewName() {
         return errorPageViewName;
     }
 
     public void setErrorPageViewName(String errorPageViewName) {
         this.errorPageViewName = errorPageViewName;
+    }
+
+    public String getLogoutViewName() {
+        return logoutViewName;
     }
 
     public void setLogoutViewName(String logoutViewName) {
@@ -313,9 +326,4 @@ public class LoginParameters {
     public void setFreePermissionPathList(List<String> freePermissionPathList) {
         this.freePermissionPathList = freePermissionPathList;
     }
-
-    public void setFreePermissionPathList(String[] pathArray) {
-        this.freePermissionPathList = Arrays.asList(pathArray);
-    }
-
 }

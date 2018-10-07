@@ -4,7 +4,6 @@ package top.buukle.consumer.cms.configure;
 import feign.Request;
 import feign.Retryer;
 import top.buukle.common.util.common.NumberUtil;
-import top.buukle.plugin.security.configure.SecurityConfigure;
 import top.buukle.plugin.security.plugins.SecurityInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,7 +58,7 @@ public class AppConfigure implements WebMvcConfigurer {
      * */
     @Bean
     SecurityInterceptor getSecurityInterceptor() {
-        return new SecurityInterceptor(SecurityConfigure.DEFAULT_PARAMETERS);
+        return new SecurityInterceptor();
     }
 
     /**

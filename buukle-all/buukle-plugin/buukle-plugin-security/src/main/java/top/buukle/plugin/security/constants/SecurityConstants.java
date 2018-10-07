@@ -50,16 +50,7 @@ public class SecurityConstants {
     public static final String ERROR_PAGE_PATH_ENVIRONMENT_KEY = "ERROR_PAGE_PATH_ENVIRONMENT_KEY";
     public static final String LOGOUT_PATH_ENVIRONMENT_KEY = "LOGOUT_PATH_ENVIRONMENT_KEY";
 
-    public static final String LOGIN_VIEW_NAME_ENVIRONMENT_KEY = "LOGIN_VIEW_NAME_ENVIRONMENT_KEY";
-    public static final String INDEX_VIEW_NAME_ENVIRONMENT_KEY = "INDEX_VIEW_NAME_ENVIRONMENT_KEY";
-    public static final String OUT_OF_TIME_VIEW_NAME_ENVIRONMENT_KEY = "OUT_OF_TIME_VIEW_NAME_ENVIRONMENT_KEY";
-    public static final String NO_PERMISSION_VIEW_NAME_ENVIRONMENT_KEY = "NO_PERMISSION_VIEW_NAME_ENVIRONMENT_KEY";
-    public static final String ERROR_PAGE_VIEW_NAME_ENVIRONMENT_KEY = "ERROR_PAGE_VIEW_NAME_ENVIRONMENT_KEY";
-    public static final String LOGOUT_VIEW_NAME_ENVIRONMENT_KEY = "LOGOUT_VIEW_NAME_ENVIRONMENT_KEY";
-
-    /** 指定视图包装对象 (通过ssoController动态返回用户配置的指定sso视图名称)*/
+    /** 用户指定视图缓存对象 (通过securityController动态返回用户配置的指定sso视图名称)*/
     public static final ViewNameParameters VIEW_NAME_PARAMETERS = new ViewNameParameters();
 
-    /** 缓存用户指定的sso服务地址*/
-    public static final List<String> SSO_HOST = new ArrayList<>();
 }

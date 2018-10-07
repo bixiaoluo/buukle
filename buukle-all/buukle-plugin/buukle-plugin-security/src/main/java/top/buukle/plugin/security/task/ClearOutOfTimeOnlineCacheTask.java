@@ -1,9 +1,9 @@
 /*
-package top.buukle.plugin.sso.task;
+package top.buukle.plugin.security.task;
 
 import top.buukle.common.util.CookieUtil;
-import top.buukle.plugin.sso.constants.Constants;
-import top.buukle.sso.service.UserServiceSso;
+import top.buukle.plugin.security.constants.Constants;
+import top.buukle.security.service.UserServiceSso;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

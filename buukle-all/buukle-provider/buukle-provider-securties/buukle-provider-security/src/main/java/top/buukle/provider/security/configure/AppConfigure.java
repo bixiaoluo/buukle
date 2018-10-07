@@ -12,11 +12,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.buukle.common.filter.reqestAndResponseParameterFilter.BaseResponseParamHandlerFilter;
 import top.buukle.common.util.common.NumberUtil;
-import top.buukle.plugin.security.configure.SecurityConfigure;
 import top.buukle.plugin.security.plugins.SecurityInterceptor;
 import top.buukle.common.filter.reqestAndResponseParameterFilter.BaseRequestParamValidateFilter;
 import top.buukle.provider.security.util.RequestValidator;
-import top.buukle.provider.security.util.ResponseHanler;
+import top.buukle.provider.security.util.ResponseHandler;
 
 /**
  * @Author elvin
@@ -64,7 +63,7 @@ public class AppConfigure implements WebMvcConfigurer {
      * */
     @Bean
     SecurityInterceptor getSecurityInterceptor() {
-        return new SecurityInterceptor(SecurityConfigure.DEFAULT_PARAMETERS);
+        return new SecurityInterceptor();
     }
 
     /**
@@ -102,7 +101,7 @@ public class AppConfigure implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean filterRegistrationBean2() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(new BaseResponseParamHandlerFilter(new ResponseHanler()));
+        registration.setFilter(new BaseResponseParamHandlerFilter(new ResponseHandler()));
         registration.addUrlPatterns("/api/*");
         registration.setName("BaseResponseParamHandlerFilter");
         registration.setOrder(2);

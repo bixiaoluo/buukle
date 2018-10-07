@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,6 +36,14 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
     @Autowired
     private SecurityBusiness authAndPermBusiness;
+
+    @Autowired
+    private LoginParameters loginParameters;
+
+    @PostConstruct
+    public void init(){
+        authAndPermInterceptor(this.loginParameters);
+    }
 
     /**
      * 请求处理
@@ -237,8 +246,6 @@ public class SecurityInterceptor implements HandlerInterceptor {
     /*---------------------------------------------设置应用相关--------------------------------------------*/
     /** 应用名*/
     public static String APPLICATION_NAME ;
-    /** sso地址*/
-    public static String SSO_HOST ;
     /** 默认超时时间*/
     public static String SSO_DEFAULT_AGE ;
     /** cookie跨域的domain*/
@@ -305,102 +312,160 @@ public class SecurityInterceptor implements HandlerInterceptor {
     public static List<String> FREE_PERMISSION_PATH_LIST ;
 
     /*-----------------------------------------------构造-----------------------------------------------------*/
-    /** 构造器*/
-    public SecurityInterceptor(LoginParameters loginParameters) {
-        authAndPermInterceptor(loginParameters);
+    /** 用户自定义配置文件-构造器*/
+    public SecurityInterceptor() {
     }
     /**
      * 初始化插件参数
      * @param loginParameters
      */
     private void authAndPermInterceptor(LoginParameters loginParameters) {
-        if(StringUtil.isNotEmpty(loginParameters.version) && loginParameters.version.equals(LoginParameters.DEFAULT_FIELD)){
-            LOGGER.info("buukle-security 将采用默认属性配置");
-        }
-        if(StringUtil.isNotEmpty(loginParameters.version) && loginParameters.version.equals(LoginParameters.DEFAULT_FILE)){
-            LOGGER.info("buukle-security 将采用用户在默认地址配置的文件内容");
-        }
-        if(StringUtil.isNotEmpty(loginParameters.version) && loginParameters.version.equals(LoginParameters.USER_FIELD)){
-            LOGGER.info("buukle-security 将采用用户自定义配置对象的配置信息");
-        }
         /*---------------------------------------------设置应用相关--------------------------------------------*/
         //应用名
-        SecurityInterceptor.APPLICATION_NAME = loginParameters.getApplicationName();
+        SecurityInterceptor.APPLICATION_NAME =
+                StringUtil.isEmpty(
+                loginParameters.getApplicationName()) ? getDefaultValueAndPrintLog("ApplicationName","default applicationName"):
+                loginParameters.getApplicationName();
         //默认超时时间
-        SecurityInterceptor.SSO_DEFAULT_AGE = loginParameters.getDefaultMaxAge();
+        SecurityInterceptor.SSO_DEFAULT_AGE =
+                StringUtil.isEmpty(
+                loginParameters.getDefaultMaxAge()) ? getDefaultValueAndPrintLog("DefaultMaxAge","300"):
+                loginParameters.getDefaultMaxAge();
         //cookie跨域的domain
-        SecurityInterceptor.SSO_DOMAIN = loginParameters.getSsoDomain();
-        //用户登出策略(1 : 单点登出 0 : 多点登出)
-        SecurityInterceptor.LOGIN_OUT_STRATEGY = loginParameters.getLoginOutStrategy();
+        SecurityInterceptor.SSO_DOMAIN =
+                StringUtil.isEmpty(
+                loginParameters.getSsoDomain()) ? getDefaultValueAndPrintLog("SsoDomain","localhost"):
+                loginParameters.getSsoDomain();
+        //用户单点登出(1 : 开启 0 : 关闭(多点登出,异地登录不下线))
+        SecurityInterceptor.LOGIN_OUT_STRATEGY =
+                StringUtil.isEmpty(
+                loginParameters.getLoginOutStrategy()) ? getDefaultValueAndPrintLog("LoginOutStrategy","1"):
+                loginParameters.getLoginOutStrategy();
         /*-----------------------------------------------设置key-----------------------------------------------*/
         //获取验证码key
-        SecurityInterceptor.VERIFICATION_CODE_KEY = loginParameters.getVerificationCodeKey();
+        SecurityInterceptor.VERIFICATION_CODE_KEY =
+                StringUtil.isEmpty(
+                loginParameters.getVerificationCodeKey()) ? getDefaultValueAndPrintLog("VerificationCodeKey","verificationCode"):
+                loginParameters.getVerificationCodeKey();
         //用户登录策略key
-        SecurityInterceptor.CACHE_CATEGORY_KEY = loginParameters.getCaCheStrategyKey();
+        SecurityInterceptor.CACHE_CATEGORY_KEY =
+                StringUtil.isEmpty(
+                loginParameters.getCaCheStrategyKey()) ? getDefaultValueAndPrintLog("CaCheStrategyKey","caCheStrategy"):
+                loginParameters.getCaCheStrategyKey();
         /*-----------------------------------------------设置开关-----------------------------------------------*/
         //授权开关(1 : 开启 0 : 关闭)
-        SecurityInterceptor.OPEN_AUTH = loginParameters.getOpenAuth();
-        //验证码验证开关(1 : 关闭 无 : 开启)
-        SecurityInterceptor.CLOSE_VERIFICATION = loginParameters.getCloseVerification();
+        SecurityInterceptor.OPEN_AUTH =
+                StringUtil.isEmpty(
+                loginParameters.getOpenAuth()) ? getDefaultValueAndPrintLog("OpenAuth","1"):
+                loginParameters.getOpenAuth();
+        //验证码验证开关(1 : 开启 0 : 关闭)
+        SecurityInterceptor.CLOSE_VERIFICATION =
+                StringUtil.isEmpty(
+                loginParameters.getCloseVerification()) ? getDefaultValueAndPrintLog("CloseVerification","0"):
+                loginParameters.getCloseVerification();
         /*--------------------------------设置指定返回json，stram 等非视图资源的Path 路径---------------------------*/
         //获取验证码路径
-        SecurityInterceptor.GET_VERIFICATION_IMG_PATH = loginParameters.getVerificationImgPath();
+        SecurityInterceptor.GET_VERIFICATION_IMG_PATH =
+                StringUtil.isEmpty(
+                loginParameters.getVerificationImgPath()) ? getDefaultValueAndPrintLog("VerificationImgPath","/getVerificationImg"):
+                loginParameters.getVerificationImgPath();
         //执行登陆路径
-        SecurityInterceptor.DO_LOGIN_PATH = loginParameters.getDoLoginPath();
+        SecurityInterceptor.DO_LOGIN_PATH =
+                StringUtil.isEmpty(
+                loginParameters.getDoLoginPath()) ? getDefaultValueAndPrintLog("DoLoginPath","/doLogin"):
+                loginParameters.getDoLoginPath();
         //未开启授权应用获取用户信息路径
 
         /*-------------------------------设置指定跳转视图的Path映射 (requestMapping) 路径---------------------------*/
         //去往登录页面路径
-        SecurityInterceptor.LOGIN_PATH = loginParameters.getLoginPath();
+        SecurityInterceptor.LOGIN_PATH =
+                StringUtil.isEmpty(
+                loginParameters.getLoginPath()) ? getDefaultValueAndPrintLog("LoginPath","/login"):
+                loginParameters.getLoginPath();
         SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.LOGIN_PATH_ENVIRONMENT_KEY, SecurityInterceptor.LOGIN_PATH);
         //去往首页页面路径
-        SecurityInterceptor.INDEX_PATH = loginParameters.getIndexPath();
+        SecurityInterceptor.INDEX_PATH =
+                StringUtil.isEmpty(
+                loginParameters.getIndexPath()) ? getDefaultValueAndPrintLog("IndexPath","/index"):
+                loginParameters.getIndexPath();
         SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.INDEX_PATH_ENVIRONMENT_KEY,INDEX_PATH);
         //去往超时页面路径
-        SecurityInterceptor.OUT_OF_TIME_PATH = loginParameters.getOutOfTimePath();
+        SecurityInterceptor.OUT_OF_TIME_PATH =
+                StringUtil.isEmpty(
+                loginParameters.getOutOfTimePath()) ? getDefaultValueAndPrintLog("OutOfTimePath","/outOfTime"):
+                loginParameters.getOutOfTimePath();
         SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.OUT_OF_TIME_PATH_LOGIN_PATH_ENVIRONMENT_KEY,OUT_OF_TIME_PATH);
         //去往越权页面路径
-        SecurityInterceptor.NO_PERMISSION_PATH = loginParameters.getNoPermissionPath();
+        SecurityInterceptor.NO_PERMISSION_PATH =
+                StringUtil.isEmpty(
+                loginParameters.getNoPermissionPath()) ? getDefaultValueAndPrintLog("NoPermissionPath","/noPermission"):
+                loginParameters.getNoPermissionPath();
         SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.NO_PERMISSION_PATH_ENVIRONMENT_KEY,NO_PERMISSION_PATH);
         //去往错误页面路径
-        SecurityInterceptor.ERROR_PAGE_PATH = loginParameters.getErrorPagePath();
+        SecurityInterceptor.ERROR_PAGE_PATH =
+                StringUtil.isEmpty(
+                loginParameters.getErrorPagePath()) ? getDefaultValueAndPrintLog("ErrorPagePath","/errors"):
+                loginParameters.getErrorPagePath();
         SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.ERROR_PAGE_PATH_ENVIRONMENT_KEY,ERROR_PAGE_PATH);
         //去往登出操作路径
-        SecurityInterceptor.LOGOUT_PATH = loginParameters.getLogoutPath();
+        SecurityInterceptor.LOGOUT_PATH =
+                StringUtil.isEmpty(
+                loginParameters.getLogoutPath()) ? getDefaultValueAndPrintLog("LogoutPath","/logout"):
+                loginParameters.getLogoutPath();
         SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.LOGOUT_PATH_ENVIRONMENT_KEY,LOGOUT_PATH);
 
         /*---------------------------------设置指定跳转视图的Path的跳转视图 (view) 名称------------------------------*/
         //登录页面跳转视图名
-        SecurityInterceptor.LOGIN_VIEW_NAME = loginParameters.getLoginViewName();
-        SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.LOGIN_VIEW_NAME_ENVIRONMENT_KEY,LOGIN_VIEW_NAME);
+        SecurityInterceptor.LOGIN_VIEW_NAME =
+                StringUtil.isEmpty(
+                loginParameters.getLoginViewName()) ? getDefaultValueAndPrintLog("LoginViewName","login"):
+                loginParameters.getLoginViewName();
         SecurityConstants.VIEW_NAME_PARAMETERS.setLoginViewName(LOGIN_VIEW_NAME);
         //首页页面跳转视图名
-        SecurityInterceptor.INDEX_VIEW_NAME = loginParameters.getIndexViewName();
-        SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.INDEX_VIEW_NAME_ENVIRONMENT_KEY,INDEX_VIEW_NAME);
+        SecurityInterceptor.INDEX_VIEW_NAME =
+                StringUtil.isEmpty(
+                loginParameters.getIndexViewName()) ? getDefaultValueAndPrintLog("IndexViewName","index"):
+                loginParameters.getIndexViewName();
         SecurityConstants.VIEW_NAME_PARAMETERS.setIndexViewName(INDEX_VIEW_NAME);
         //超时页面跳转视图名
-        SecurityInterceptor.OUT_OF_TIME_VIEW_NAME = loginParameters.getOutOfTimeViewName();
-        SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.OUT_OF_TIME_VIEW_NAME_ENVIRONMENT_KEY,OUT_OF_TIME_VIEW_NAME);
+        SecurityInterceptor.OUT_OF_TIME_VIEW_NAME =
+                StringUtil.isEmpty(
+                loginParameters.getOutOfTimeViewName()) ? getDefaultValueAndPrintLog("OutOfTimeViewName","outOfTime"):
+                loginParameters.getOutOfTimeViewName();
         SecurityConstants.VIEW_NAME_PARAMETERS.setOutOfTimeViewName(OUT_OF_TIME_VIEW_NAME);
         //越权页面跳转视图名
-        SecurityInterceptor.NO_PERMISSION_VIEW_NAME = loginParameters.getNoPermissionViewName();
-        SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.NO_PERMISSION_VIEW_NAME_ENVIRONMENT_KEY,NO_PERMISSION_VIEW_NAME);
+        SecurityInterceptor.NO_PERMISSION_VIEW_NAME =
+                StringUtil.isEmpty(
+                loginParameters.getNoPermissionViewName()) ? getDefaultValueAndPrintLog("noPermissionViewName","noPermission"):
+                loginParameters.getNoPermissionViewName();
         SecurityConstants.VIEW_NAME_PARAMETERS.setNoPermissionViewName(NO_PERMISSION_VIEW_NAME);
         //错误页面跳转视图名
-        SecurityInterceptor.ERROR_PAGE_VIEW_NAME = loginParameters.getErrorPageViewName();
-        SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.ERROR_PAGE_VIEW_NAME_ENVIRONMENT_KEY,ERROR_PAGE_VIEW_NAME);
+        SecurityInterceptor.ERROR_PAGE_VIEW_NAME =
+                StringUtil.isEmpty(
+                loginParameters.getErrorPageViewName()) ? getDefaultValueAndPrintLog("ErrorPageViewName","error"):
+                loginParameters.getErrorPageViewName();
         SecurityConstants.VIEW_NAME_PARAMETERS.setErrorViewName(ERROR_PAGE_VIEW_NAME);
         //登出完成跳转视图名
-        SecurityInterceptor.LOGOUT_VIEW_NAME = loginParameters.getLogoutViewName();
-        SpringEnvironmentUtil.setEnvironmentProperty(SecurityConstants.LOGOUT_VIEW_NAME_ENVIRONMENT_KEY,LOGOUT_VIEW_NAME);
+        SecurityInterceptor.LOGOUT_VIEW_NAME =
+                StringUtil.isEmpty(
+                loginParameters.getLogoutViewName()) ? getDefaultValueAndPrintLog("LogoutViewName","index"):
+                loginParameters.getLogoutViewName();
         SecurityConstants.VIEW_NAME_PARAMETERS.setLogoutViewName(LOGOUT_VIEW_NAME);
 
         /*----------------------------------------设置免授权路径数组------------------------------------------------*/
         //开启授权后，指定免授权的路径数组集合
         SecurityInterceptor.FREE_PERMISSION_PATH_LIST = loginParameters.getFreePermissionPathList();
-        //缓存用户指定的sso地址
-        SecurityInterceptor.SSO_HOST = loginParameters.getSsoHost();
-        SecurityConstants.SSO_HOST.add(loginParameters.getSsoHost());
+    }
+
+    /**
+     * 默认值采用日志
+     * @param defaultKey
+     * @param defaultValue
+     * @return
+     */
+    private String getDefaultValueAndPrintLog(String defaultKey,String defaultValue) {
+        LOGGER.info("buukle-security :{} 配置没有找到,将使用默认值:{}",defaultKey,defaultValue);
+        return defaultValue;
     }
 }
 
