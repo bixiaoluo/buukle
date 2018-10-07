@@ -65,7 +65,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void update(User user) throws Exception {
 		userMapper.update(user);
-	}
+        int i = 1/0;
+    }
 	@Override
 	public void delete(User user) throws Exception {
 	}

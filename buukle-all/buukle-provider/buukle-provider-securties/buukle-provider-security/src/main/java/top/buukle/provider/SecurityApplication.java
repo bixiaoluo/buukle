@@ -1,20 +1,19 @@
 package top.buukle.provider;
 
-import org.mybatis.spring.annotation.MapperScan;
+import com.alibaba.druid.pool.DruidDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+
+import javax.sql.DataSource;
 
 @SpringBootApplication(scanBasePackages={"top.buukle.common", "top.buukle.provider.security", "top.buukle.plugin.security"})
-@ImportResource(locations = {"classpath:config/spring/springBootContext.xml"})
-@EnableEurekaClient
 @EnableFeignClients(basePackages = {"top.buukle.plugin.security.invoker"})
-@MapperScan("top.buukle.provider.security.dao")
 public class SecurityApplication {
-
     /** 应用逻辑开关监听*/
     private static volatile boolean RUNNING = true;
     public static void main(String[] args) {
@@ -31,4 +30,5 @@ public class SecurityApplication {
             }
         }
     }
+
 }
